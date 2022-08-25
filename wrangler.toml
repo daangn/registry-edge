@@ -1,0 +1,22 @@
+name = "registry-edge"
+workers_dev = true
+compatibility_date = "2022-08-25"
+compatibility_flags = [
+  "url_standard"
+]
+account_id = "aad5c82543cd1f267b89737d0f56405e"
+
+[vars]
+WORKERS_RS_VERSION = "0.0.10"
+
+[build]
+command = "worker-build --release"
+
+[build.upload]
+dir = "build/worker"
+format = "modules"
+main = "./shim.mjs"
+
+[[build.upload.rules]]
+globs = ["**/*.wasm"]
+type = "CompiledWasm"
