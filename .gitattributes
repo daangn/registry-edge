@@ -1,2 +1,4 @@
 .yarn/**           linguist-vendored
 .yarn/releases/*   binary linguist-vendored
+
+tests/data/**      linguist-vendored

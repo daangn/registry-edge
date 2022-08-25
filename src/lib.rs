@@ -1,3 +1,6 @@
+mod media;
+mod errors;
+mod digest;
 mod utils;
 
 use worker::*;
