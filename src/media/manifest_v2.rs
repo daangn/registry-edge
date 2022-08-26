@@ -41,18 +41,18 @@ impl From<serde_json::Error> for ManifestV2Error {
     }
 }
 
+impl From<ManifestV2Error> for RegistryError {
+    fn from(_: ManifestV2Error) -> Self {
+        Self::InvalidManifest
+    }
+}
+
 impl FromStr for ManifestV2 {
     type Err = ManifestV2Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let manifest: Self = serde_json::from_str(s)?;
         Ok(manifest)
-    }
-}
-
-impl From<ManifestV2Error> for RegistryError {
-    fn from(_: ManifestV2Error) -> Self {
-        Self::InvalidManifest
     }
 }
 
@@ -92,7 +92,7 @@ mod test {
     #[test]
     fn parse_manifest_v2() {
         let json = include_str!("../../tests/data/manifest_v2.json");
-        let manifest = ManifestV2::from_str(json);
+        let manifest = json.parse::<ManifestV2>();
         assert!(manifest.is_ok());
     }
 }

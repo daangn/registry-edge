@@ -47,18 +47,18 @@ impl From<serde_json::Error> for ManifestV1Error {
     }
 }
 
+impl From<ManifestV1Error> for RegistryError {
+    fn from(_: ManifestV1Error) -> Self {
+        Self::InvalidManifest
+    }
+}
+
 impl FromStr for ManifestV1 {
     type Err = ManifestV1Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let manifest: Self = serde_json::from_str(s)?;
         Ok(manifest)
-    }
-}
-
-impl From<ManifestV1Error> for RegistryError {
-    fn from(_: ManifestV1Error) -> Self {
-        Self::InvalidManifest
     }
 }
 

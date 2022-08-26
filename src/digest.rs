@@ -1,31 +1,31 @@
-use std::fmt;
+use std::{fmt, str::FromStr};
 use regex::Regex;
 use lazy_static::lazy_static;
-use serde;
 
 use crate::errors::RegistryError;
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum SupportedAlgorithm {
-    SHA256,
+    Sha256,
 }
 
 impl fmt::Display for SupportedAlgorithm {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
-            Self::SHA256 => write!(f, "sha256"),
+            Self::Sha256 => write!(f, "sha256"),
         }
     }
 }
 
-impl TryFrom<&str> for SupportedAlgorithm {
-    type Error = RegistryError;
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value {
-            "sha256" => Ok(Self::SHA256),
-            _ => Err(RegistryError::InvalidDigest(
-                "only sha256 digest currently supported".to_string(),
-            )),
+impl FromStr for SupportedAlgorithm {
+    type Err = RegistryError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "sha256" => Ok(Self::Sha256),
+            _ => Err(RegistryError::InvalidDigest {
+                detail: "only sha256 digest currently supported".to_string(),
+            }),
         }
     }
 }
@@ -42,20 +42,20 @@ impl fmt::Display for ContentDigest {
     }
 }
 
-impl TryFrom<&str> for ContentDigest {
-    type Error = RegistryError;
+impl FromStr for ContentDigest {
+    type Err = RegistryError;
 
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
         lazy_static! {
             static ref RE: Regex = Regex::new(
                 r"^(?P<alg>[A-Za-z0-9_+.-]+):(?P<hash>[A-Fa-f0-9]+)$"
             ).unwrap();
         }
-        RE.captures(value)
+        RE.captures(s)
             .and_then(|cap| {
                 match (cap.name("alg"), cap.name("hash")) {
                     (Some(alg), Some(hash)) => {
-                        match SupportedAlgorithm::try_from(alg.as_str()) {
+                        match SupportedAlgorithm::from_str(alg.as_str()) {
                             Ok(alg) => Some(Self {
                                 alg,
                                 hash: hash.as_str().to_string(),
@@ -66,9 +66,9 @@ impl TryFrom<&str> for ContentDigest {
                     _ => None,
                 }
             })
-            .ok_or(RegistryError::InvalidDigest(
-                "format shoud be `{alg}:{hash}`".to_string(),
-            ))
+            .ok_or_else(|| RegistryError::InvalidDigest {
+                detail: "format shoud be `{alg}:{hash}`".to_string(),
+            })
     }
 }
 
@@ -78,17 +78,17 @@ mod test {
 
     #[test]
     fn parse_digest() {
-        let digest = ContentDigest::try_from("sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b");
+        let digest = "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b".parse::<ContentDigest>();
         assert!(digest.is_ok());
 
         let digest = digest.unwrap();
-        assert_eq!(digest.alg, SupportedAlgorithm::SHA256);
-        assert_eq!(digest.hash, String::from("6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b"))
+        assert_eq!(digest.alg, SupportedAlgorithm::Sha256);
+        assert_eq!(digest.hash, "6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b".to_string())
     }
 
     #[test]
     fn invalid_unsupported_algorithm() {
-        let digest = ContentDigest::try_from("sha512:ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff");
+        let digest = "sha512:ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff".parse::<ContentDigest>();
         assert!(digest.is_err());
     }
 }
@@ -120,7 +120,7 @@ impl<'de> serde::de::Deserialize<'de> for ContentDigest {
                 where
                     E: serde::de::Error,
             {
-                ContentDigest::try_from(value).map_err(E::custom)
+                ContentDigest::from_str(value).map_err(E::custom)
             }
         }
 
