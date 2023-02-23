@@ -2,10 +2,8 @@
   "name": "registry-edge",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-  },
   "devDependencies": {
-    "wrangler": "^2.0.27"
+    "wrangler": "^2.11.0"
   },
   "packageManager": "yarn@3.2.3"
 }
