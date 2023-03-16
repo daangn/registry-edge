@@ -1604,7 +1604,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "registry-edge@workspace:."
   dependencies:
-    wrangler: ^2.11.0
+    wrangler: ^2.12.3
   languageName: unknown
   linkType: soft
 
@@ -1955,9 +1955,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:^2.11.0":
-  version: 2.11.0
-  resolution: "wrangler@npm:2.11.0"
+"wrangler@npm:^2.12.3":
+  version: 2.12.3
+  resolution: "wrangler@npm:2.12.3"
   dependencies:
     "@cloudflare/kv-asset-handler": ^0.2.0
     "@esbuild-plugins/node-globals-polyfill": ^0.1.1
@@ -1981,7 +1981,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: a1db8bfbc7a5834ab3697609bc51f0a70a2e22d4049d0dc21831e5164a5e8717a5ad96c85474f6530d1da2870c44c3a119eb38c8ec517d0d9399effd15d2465f
+  checksum: 4ca9f8d7235b1581dc64844a1f1e73373a9c25adfa7e550158de66a57510e212bc3df5f153d5fc13153fdc70081039d99a1b61ff42c4a9317883a39525d09eeb
   languageName: node
   linkType: hard
 

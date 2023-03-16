@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "wrangler": "^2.11.0"
+    "wrangler": "^2.12.3"
   },
   "packageManager": "yarn@3.2.3"
 }
