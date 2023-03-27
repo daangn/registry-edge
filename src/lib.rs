@@ -10,6 +10,14 @@ use worker::*;
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
     utils::set_panic_hook();
 
+    console_log!(
+        "\n{} {}\n{:#?}Body: {:?}\n",
+        req.method().to_string(),
+        req.path(),
+        req.headers(),
+        req.inner().body().map(|b| b.to_string()),
+    );
+
     // See https://docs.docker.com/registry/spec/api/#detail
     Router::new()
         // index
