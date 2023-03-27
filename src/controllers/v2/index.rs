@@ -4,7 +4,8 @@ use worker::*;
 ///
 /// See https://docs.docker.com/registry/spec/api/#get-base
 pub async fn get_base(mut _req: Request, _ctx: RouteContext<()>) -> Result<Response> {
-    unimplemented!();
+    // FIXME: implement auth methods
+    Response::ok("")
 }
 
 /// Fetch the tags under the repository identified by `name`.

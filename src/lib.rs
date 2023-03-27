@@ -22,6 +22,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     Router::new()
         // index
         .get_async("/v2", controllers::v2::index::get_base)
+        .get_async("/v2/", controllers::v2::index::get_base)
         .get_async("/v2/:pathname/:name/tags/list", controllers::v2::index::get_tags)
         .get_async("/v2/_catalog", controllers::v2::index::get_catalog)
 
