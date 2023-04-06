@@ -23,7 +23,7 @@ impl FromStr for SupportedAlgorithm {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "sha256" => Ok(Self::Sha256),
-            _ => Err(RegistryError::InvalidDigest {
+            _ => Err(RegistryError::DigestInvalid {
                 detail: "only sha256 digest currently supported".to_string(),
             }),
         }
@@ -66,7 +66,7 @@ impl FromStr for ContentDigest {
                     _ => None,
                 }
             })
-            .ok_or_else(|| RegistryError::InvalidDigest {
+            .ok_or_else(|| RegistryError::DigestInvalid {
                 detail: "format shoud be `{alg}:{hash}`".to_string(),
             })
     }
