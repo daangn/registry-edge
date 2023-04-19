@@ -677,9 +677,9 @@ dependencies = [
 
 [[package]]
 name = "worker"
-version = "0.0.14"
+version = "0.0.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ebe8a8b8570b17d9d012f48a3b4edf833ce96caa15a9270317640bf39f87e59"
+checksum = "301c77ead87587225c6f58104de6c9046afef597e7d39d36cba2640b5af1046a"
 dependencies = [
  "async-trait",
  "chrono",
