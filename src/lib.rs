@@ -18,6 +18,11 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
         req.inner().body().map(|b| b.to_string()),
     );
 
+    // Image tag convention: `[hostname]/[repository_name]/[image_name]`
+    // - the hostname is where the worker deployed.
+    // - the "repository" is a logically isolated unit of an image repository.
+    // - the "image" is an identifier.
+
     // See https://docs.docker.com/registry/spec/api/#detail
     Router::new()
         // index
