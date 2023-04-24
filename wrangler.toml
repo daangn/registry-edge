@@ -8,7 +8,7 @@ compatibility_flags = [
 main = "build/worker/shim.mjs"
 
 [vars]
-WORKERS_RS_VERSION = "0.0.14"
+WORKERS_RS_VERSION = "0.0.16"
 
 [build]
 command = "worker-build --release"

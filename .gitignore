@@ -1,4 +1,5 @@
 *.log
+dist/
 target/
 node_modules/
 
