@@ -1,6 +1,6 @@
-use std::{fmt, str::FromStr};
-use regex::Regex;
 use lazy_static::lazy_static;
+use regex::Regex;
+use std::{fmt, str::FromStr};
 
 use crate::errors::RegistryError;
 
@@ -47,24 +47,19 @@ impl FromStr for ContentDigest {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         lazy_static! {
-            static ref RE: Regex = Regex::new(
-                r"^(?P<alg>[A-Za-z0-9_+.-]+):(?P<hash>[A-Fa-f0-9]+)$"
-            ).unwrap();
+            static ref RE: Regex =
+                Regex::new(r"^(?P<alg>[A-Za-z0-9_+.-]+):(?P<hash>[A-Fa-f0-9]+)$").unwrap();
         }
         RE.captures(s)
-            .and_then(|cap| {
-                match (cap.name("alg"), cap.name("hash")) {
-                    (Some(alg), Some(hash)) => {
-                        match SupportedAlgorithm::from_str(alg.as_str()) {
-                            Ok(alg) => Some(Self {
-                                alg,
-                                hash: hash.as_str().to_string(),
-                            }),
-                            _ => None,
-                        }
-                    },
+            .and_then(|cap| match (cap.name("alg"), cap.name("hash")) {
+                (Some(alg), Some(hash)) => match SupportedAlgorithm::from_str(alg.as_str()) {
+                    Ok(alg) => Some(Self {
+                        alg,
+                        hash: hash.as_str().to_string(),
+                    }),
                     _ => None,
-                }
+                },
+                _ => None,
             })
             .ok_or_else(|| RegistryError::DigestInvalid {
                 detail: "format shoud be `{alg}:{hash}`".to_string(),
@@ -78,12 +73,16 @@ mod test {
 
     #[test]
     fn parse_digest() {
-        let digest = "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b".parse::<ContentDigest>();
+        let digest = "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b"
+            .parse::<ContentDigest>();
         assert!(digest.is_ok());
 
         let digest = digest.unwrap();
         assert_eq!(digest.alg, SupportedAlgorithm::Sha256);
-        assert_eq!(digest.hash, "6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b".to_string())
+        assert_eq!(
+            digest.hash,
+            "6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b".to_string()
+        )
     }
 
     #[test]
@@ -95,8 +94,8 @@ mod test {
 
 impl serde::ser::Serialize for ContentDigest {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: serde::Serializer,
+    where
+        S: serde::Serializer,
     {
         serializer.serialize_str(self.to_string().as_str())
     }
@@ -104,8 +103,8 @@ impl serde::ser::Serialize for ContentDigest {
 
 impl<'de> serde::de::Deserialize<'de> for ContentDigest {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where
-            D: serde::Deserializer<'de>,
+    where
+        D: serde::Deserializer<'de>,
     {
         struct Visitor;
 
@@ -117,8 +116,8 @@ impl<'de> serde::de::Deserialize<'de> for ContentDigest {
             }
 
             fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-                where
-                    E: serde::de::Error,
+            where
+                E: serde::de::Error,
             {
                 ContentDigest::from_str(value).map_err(E::custom)
             }

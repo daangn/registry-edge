@@ -1,13 +1,15 @@
+use serde::{Deserialize, Serialize};
+use serde_repr::{Deserialize_repr, Serialize_repr};
 use std::str::FromStr;
-use serde::{Serialize, Deserialize};
-use serde_repr::{Serialize_repr, Deserialize_repr};
 
 use crate::digest;
 use crate::errors::RegistryError;
 
 #[derive(Debug, Serialize_repr, Deserialize_repr)]
 #[repr(u8)]
-pub enum SchemaVersion { X = 2 }
+pub enum SchemaVersion {
+    X = 2,
+}
 
 /// See https://docs.docker.com/registry/spec/manifest-v2-2/#image-manifest
 #[derive(Debug, Serialize, Deserialize)]
@@ -20,7 +22,6 @@ pub struct ManifestV2 {
     /// The MIME type of the manifest.
     /// This should be set to `application/vnd.docker.distribution.manifest.v2+json`.
     pub media_type: String,
-
 
     /// The config field references a configuration object for a container, by digest.
     /// This configuration item is a JSON blob that the runtime uses to set up the container.

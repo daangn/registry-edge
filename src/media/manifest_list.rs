@@ -1,13 +1,15 @@
+use serde::{Deserialize, Serialize};
+use serde_repr::{Deserialize_repr, Serialize_repr};
 use std::str::FromStr;
-use serde::{Serialize, Deserialize};
-use serde_repr::{Serialize_repr, Deserialize_repr};
 
 use crate::digest;
 use crate::errors::RegistryError;
 
 #[derive(Debug, Serialize_repr, Deserialize_repr)]
 #[repr(u8)]
-pub enum SchemaVersion { X = 2 }
+pub enum SchemaVersion {
+    X = 2,
+}
 
 /// See https://docs.docker.com/registry/spec/manifest-v2-2/#manifest-list-field-descriptions
 #[derive(Debug, Serialize, Deserialize)]

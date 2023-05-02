@@ -42,5 +42,3 @@ pub async fn complete(mut _req: Request, _ctx: RouteContext<()>) -> Result<Respo
 pub async fn delete(mut _req: Request, _ctx: RouteContext<()>) -> Result<Response> {
     unimplemented!();
 }
-
-
