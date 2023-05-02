@@ -47,8 +47,7 @@ impl FromStr for ContentDigest {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         lazy_static! {
-            static ref RE: Regex =
-                Regex::new(r"^(?P<alg>[A-Za-z0-9_+.-]+):(?P<hash>[A-Fa-f0-9]+)$").unwrap();
+            static ref RE: Regex = Regex::new(r"^(?P<alg>[A-Za-z0-9_+.-]+):(?P<hash>[A-Fa-f0-9]+)$").unwrap();
         }
         RE.captures(s)
             .and_then(|cap| match (cap.name("alg"), cap.name("hash")) {
@@ -73,8 +72,7 @@ mod test {
 
     #[test]
     fn parse_digest() {
-        let digest = "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b"
-            .parse::<ContentDigest>();
+        let digest = "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b".parse::<ContentDigest>();
         assert!(digest.is_ok());
 
         let digest = digest.unwrap();
@@ -87,7 +85,9 @@ mod test {
 
     #[test]
     fn invalid_unsupported_algorithm() {
-        let digest = "sha512:ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff".parse::<ContentDigest>();
+        let digest =
+            "sha512:ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"
+                .parse::<ContentDigest>();
         assert!(digest.is_err());
     }
 }

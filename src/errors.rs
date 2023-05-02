@@ -55,10 +55,7 @@ pub enum RegistryError {
 
     /// When a layer is uploaded, the provided size will be checked against the uploaded
     /// content. If they do not match, this error will be returned.
-    SizeInvalid {
-        uploaded_size: usize,
-        expected_size: usize,
-    },
+    SizeInvalid { uploaded_size: usize, expected_size: usize },
 
     /// During a manifest upload, if the tag in the manifest does not match the uri tag,
     /// this error will be returned.
@@ -81,11 +78,7 @@ impl fmt::Display for RegistryError {
             Self::BlobUnknown => write!(f, "blob unknown to registry"),
             Self::BlobUploadInvalid => write!(f, "blob upload is invalid"),
             Self::BlobUploadUnknown => write!(f, "blob upload is unknown to registry"),
-            Self::DigestInvalid { detail } => write!(
-                f,
-                "provided digest did not match uploaded content: {}",
-                detail
-            ),
+            Self::DigestInvalid { detail } => write!(f, "provided digest did not match uploaded content: {}", detail),
             Self::ManifestBlobUnknown => write!(f, "manifest blob is unknown to registry"),
             Self::ManifestInvalid { detail } => write!(f, "manifest is invalid: {}", detail),
             Self::ManifestUnknown => write!(f, "manifest unknown"),
