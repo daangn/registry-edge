@@ -90,7 +90,11 @@ impl fmt::Display for RegistryError {
             Self::SizeInvalid {
                 uploaded_size,
                 expected_size,
-            } => write!(f, "provided length ({}) did not match content length ({})", expected_size, uploaded_size),
+            } => write!(
+                f,
+                "provided length ({}) did not match content length ({})",
+                expected_size, uploaded_size
+            ),
             Self::TagInvalid => write!(f, "manifest tag did not match URI"),
             Self::Unauthorized => write!(f, "authentication required"),
             Self::Denied => write!(f, "requested access to the resource is denied"),
