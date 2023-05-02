@@ -53,9 +53,7 @@ impl FromStr for ManifestList {
 impl From<ManifestListError> for RegistryError {
     fn from(err: ManifestListError) -> Self {
         match err {
-            ManifestListError::ParsingError(err) => Self::ManifestInvalid {
-                detail: err.to_string(),
-            },
+            ManifestListError::ParsingError(err) => Self::ManifestInvalid { detail: err.to_string() },
         }
     }
 }

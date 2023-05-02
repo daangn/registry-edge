@@ -45,9 +45,7 @@ impl From<serde_json::Error> for ManifestV2Error {
 impl From<ManifestV2Error> for RegistryError {
     fn from(err: ManifestV2Error) -> Self {
         match err {
-            ManifestV2Error::ParsingError(err) => Self::ManifestInvalid {
-                detail: err.to_string(),
-            },
+            ManifestV2Error::ParsingError(err) => Self::ManifestInvalid { detail: err.to_string() },
         }
     }
 }
