@@ -40,6 +40,6 @@ We use three types of storage.
 
 - [R2](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/) for blobs
 - [KV](https://developers.cloudflare.com/workers/runtime-apis/kv/) for metadata and distributed cache
-- [Durable Objects storage](https://developers.cloudflare.com/workers/runtime-apis/durable-objects/#transactional-storage-api) for entities (has own lifecycle such as repositories, blog uploads, etc) state
+- [Durable Objects storage](https://developers.cloudflare.com/workers/runtime-apis/durable-objects/#transactional-storage-api) for entities (has own lifecycle such as repositories, blob uploads, etc) state
 
 Still, everything runs on Cloudflare.
